@@ -3,9 +3,9 @@
 #include <ATen/ATen.h>
 #include <ATen/cuda/CUDAContext.h>
 
-#include <THC/THC.h>
-#include <THC/THCAtomics.cuh>
-#include <THC/THCDeviceUtils.cuh>
+#include <ATen/ceil_div.h>
+#include <ATen/cuda/DeviceUtils.cuh>
+#include <ATen/cuda/Atomic.cuh>
 
 
 #define CUDA_1D_KERNEL_LOOP(i, n)                            \
@@ -178,7 +178,7 @@ at::Tensor border_align_cuda_forward(
 
     cudaStream_t stream = at::cuda::getCurrentCUDAStream();
 
-    dim3 grid(std::min(THCCeilDiv((long)output_size, 64L), 4096L));
+    dim3 grid(std::min(at::ceil_div((long)output_size, 64L), 4096L));
     dim3 block(128, 4);
 
     AT_DISPATCH_FLOATING_TYPES(feature.scalar_type(), "BorderAlign_Forward", [&] {
@@ -201,7 +201,7 @@ at::Tensor border_align_cuda_forward(
             pool_data);
         }
     );
-    THCudaCheck(cudaGetLastError());
+    AT_CUDA_CHECK(cudaGetLastError());
     return pool_output;
 }
 
@@ -297,7 +297,7 @@ at::Tensor border_align_cuda_backward(
 
     cudaStream_t stream = at::cuda::getCurrentCUDAStream();
 
-    dim3 grid(std::min(THCCeilDiv((long)output_size, 64L), 4096L));
+    dim3 grid(std::min(at::ceil_div((long)output_size, 64L), 4096L));
     dim3 block(128, 4);
 
     AT_DISPATCH_FLOATING_TYPES(feature.scalar_type(), "BorderAlign_Backward", [&] {
@@ -322,7 +322,7 @@ at::Tensor border_align_cuda_backward(
             pool_size);
         }
     );
-    THCudaCheck(cudaGetLastError());
+    AT_CUDA_CHECK(cudaGetLastError());
     return gradInput;
 }
 }

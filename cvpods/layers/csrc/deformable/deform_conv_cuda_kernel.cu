@@ -73,7 +73,7 @@
 #include <float.h>
 #include <math.h>
 #include <stdio.h>
-#include <THC/THCAtomics.cuh>
+#include <ATen/cuda/Atomic.cuh>
 
 using namespace at;
 

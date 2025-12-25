@@ -7,9 +7,9 @@
 #include <ATen/ATen.h>
 #include <ATen/cuda/CUDAContext.h>
 
-#include <THC/THC.h>
-#include <THC/THCAtomics.cuh>
-#include <THC/THCDeviceUtils.cuh>
+#include <ATen/ceil_div.h>
+#include <ATen/cuda/DeviceUtils.cuh>
+#include <ATen/cuda/Atomic.cuh>
 
 /* Switch of minimal spanning tree algorithms */
 /* Note: we will migrate the cuda implementaion to PyTorch in the next version */
