@@ -4,6 +4,7 @@
 
 #include <ATen/ceil_div.h>
 #include <ATen/cuda/DeviceUtils.cuh>
+#include <ATen/cuda/ThrustAllocator.h>
 
 #include <vector>
 #include <iostream>
